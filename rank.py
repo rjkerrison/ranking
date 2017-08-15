@@ -1,4 +1,4 @@
-from data import ranking
+from classes import ranking
 
 all_rankings = {}
 

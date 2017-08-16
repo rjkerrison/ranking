@@ -12,28 +12,6 @@ class Ordering(enum.Enum):
     OnAPar = 0
     TwoBeatsOne = 1
 
-class Comparison():
-    def __init__(self, id1, id2, ordering):
-        self.id1 = id1
-        self.id2 = id2
-        self.ordering = ordering
-
-    def __str__(self):
-        if self.ordering == Ordering.OneBeatsTwo:
-            string_ordering = '>'
-        if self.ordering == Ordering.OnAPar:
-            string_ordering = '='
-        if self.ordering == Ordering.TwoBeatsOne:
-            string_ordering = '<'
-
-        return '{0}{1}{2}'.format(
-            self.id1,
-            string_ordering,
-            self.id2)
-
-    def __repr__(self):
-        return self.__str__().__repr__()
-
 class Ranking():
     def __init__(self, name, details, entries, rank_data):
         self.name = name
@@ -56,27 +34,38 @@ class Ranking():
         return hashlib.sha256(encoded_json).hexdigest()
 
     def calculate_rank(self):
-        entry_scores = {}
+        entry_scores = {entry['_id']:0 for entry in self.entries}
 
-        for rank_datum in self.rank_data:
-            if rank_datum.id1 not in entry_scores:
-                entry_scores[rank_datum.id1] = 0
-            if rank_datum.id2 not in entry_scores:
-                entry_scores[rank_datum.id2] = 0
-            
-            if rank_datum.ordering == Ordering.OneBeatsTwo:
-                entry_scores[rank_datum.id1] += 2
-                entry_scores[rank_datum.id2] += -1
+        for comparison in self.rank_data:
+            id1, id2, ordering = self.__parse_comparison(comparison)
 
-            if rank_datum.ordering == Ordering.OnAPar:
-                entry_scores[rank_datum.id1] += 1
-                entry_scores[rank_datum.id2] += 1
+            if ordering == Ordering.OneBeatsTwo:
+                entry_scores[id1] += 2
+                entry_scores[id2] += -1
+                print(comparison, id1, id2, ordering)
 
-            if rank_datum.ordering == Ordering.OneBeatsTwo:
-                entry_scores[rank_datum.id1] += -1
-                entry_scores[rank_datum.id2] += 2
+            if ordering == Ordering.OnAPar:
+                entry_scores[id1] += 1
+                entry_scores[id2] += 1
 
-        print(entry_scores)
+            if ordering == Ordering.TwoBeatsOne:
+                entry_scores[id1] += -1
+                entry_scores[id2] += 2
+
+        ranked_entries = sorted(
+            self.entries,
+            key=lambda x: entry_scores[x['_id']])
+
+        print(ranked_entries)
+
+    def __parse_comparison(self, comparison):
+        match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', comparison)
+
+        id1 = self.__get_entry_by_partial_id(match.group(1))
+        id2 = self.__get_entry_by_partial_id(match.group(3))
+        ordering = self.__get_ordering_from_connector(match.group(2))
+
+        return id1, id2, ordering
 
     def add_rank_data(self):
         comparison = self.__add_rank_data_dialog() 
@@ -134,11 +123,9 @@ class Ranking():
 
         match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', value)
 
-        id1 = self.__get_entry_by_partial_id(match.group(1))
-        id2 = self.__get_entry_by_partial_id(match.group(3))
-        ordering = self.__get_ordering_from_connector(match.group(2))
-
-        return Comparison(id1, id2, ordering)
+        if match:
+            return value
+        raise Exception('Invalid comparison format')
 
     def __get_ordering_from_connector(self, connector):
         if connector == '>':

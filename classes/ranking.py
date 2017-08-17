@@ -57,8 +57,10 @@ class Ranking():
             reverse=True)
 
         for entry in ranked_entries:
-            print(entry['name'], entry_scores[entry['_id']])
-        print(ranked_entries)
+            print(
+                '{name:30}{score}'.format(
+                    name = entry['name'],
+                    score = entry_scores[entry['_id']]))
 
     def __parse_comparison(self, comparison):
         match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', comparison)

@@ -42,7 +42,6 @@ class Ranking():
             if ordering == Ordering.OneBeatsTwo:
                 entry_scores[id1] += 2
                 entry_scores[id2] += -1
-                print(comparison, id1, id2, ordering)
 
             if ordering == Ordering.OnAPar:
                 entry_scores[id1] += 1
@@ -54,8 +53,11 @@ class Ranking():
 
         ranked_entries = sorted(
             self.entries,
-            key=lambda x: entry_scores[x['_id']])
+            key=lambda x: entry_scores[x['_id']],
+            reverse=True)
 
+        for entry in ranked_entries:
+            print(entry['name'], entry_scores[entry['_id']])
         print(ranked_entries)
 
     def __parse_comparison(self, comparison):
@@ -67,8 +69,9 @@ class Ranking():
 
         return id1, id2, ordering
 
-    def add_rank_data(self):
-        comparison = self.__add_rank_data_dialog() 
+    def add_comparison(self, comparison=None):
+        if comparison is None:
+            comparison = self.__add_comparison_dialog() 
         self.rank_data.append(comparison)
 
     def add_entry(self):
@@ -111,7 +114,7 @@ class Ranking():
                 return True
         return False
 
-    def __add_rank_data_dialog(self):
+    def __add_comparison_dialog(self):
         entry_dictionary = {}
 
         for entry in self.entries:
@@ -162,7 +165,5 @@ def get_ranking_from_json(json_file):
             ranking_json['rank_data'] if 'rank_data' in ranking_json else None)
 
 def save_ranking_to_json(ranking, json_file):
-    print(Encoder().encode(ranking))
-
     with open(json_file, 'w') as ranking_file:
-        json.dump(ranking, ranking_file, indent=4, cls=Encoder)
+        json.dump(ranking.__dict__, ranking_file, indent=4)

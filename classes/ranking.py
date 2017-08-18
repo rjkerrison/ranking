@@ -78,6 +78,7 @@ class Ranking():
 
     def add_entry(self):
         new_entry = self.__add_entry_dialog()
+        new_entry['_id'] = self._generate_unique_id(new_entry)
         self.entries.append(new_entry)
 
     def find_entry(self, search_term, search_field=None):

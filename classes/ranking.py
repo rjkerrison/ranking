@@ -2,6 +2,7 @@ import enum
 import hashlib
 import json
 import re
+from .io import get_input
 
 class Encoder(json.JSONEncoder):
     def default(self, obj):
@@ -58,7 +59,7 @@ class Ranking():
             reverse=True)
 
         for entry in ranked_entries:
-            print(f'{entry['name']:30}{entry_scores[entry['_id']]}')
+            print(f"{entry['name']:30}{entry_scores[entry['_id']]}")
 
     def __parse_comparison(self, comparison):
         match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', comparison)
@@ -96,7 +97,7 @@ class Ranking():
 
         while chosen_index is None:
             try:
-                input_choice = int(input('Choose one. Give the index: '))
+                input_choice = int(get_input('Choose one. Give the index: '))
                 if input_choice in range(0, number_matches):
                     chosen_index = input_choice
             except:
@@ -116,12 +117,10 @@ class Ranking():
         return False
 
     def __add_comparison_dialog(self):
-        entry_dictionary = {}
-
         for entry in self.entries:
-            print(f'{entry['_id']}: {entry['name']}')
+            print(f"{entry['_id']}: {entry['name']}")
 
-        value = input('Give a comparison like "a234<b567" or "c123=d314": ')
+        value = get_input('Give a comparison like "a234<b567" or "c123=d314": ')
 
         match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', value)
 
@@ -141,13 +140,13 @@ class Ranking():
         matched_entries = [entry['_id'] for entry in self.entries if partial_id in entry['_id']]
         if len(matched_entries) == 1:
             return matched_entries[0]
-        raise Exception(f'{partial_id} matched {len(matched_entries)} entries.')
+        raise Exception(f"{partial_id} matched {len(matched_entries)} entries.")
 
     def __add_entry_dialog(self):
         entry_dictionary = {}
 
         for key, description in self.details.items():
-            value = input(description + ': ')
+            value = get_input(description + ': ')
             entry_dictionary[key] = value
 
         return entry_dictionary

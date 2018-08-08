@@ -20,7 +20,7 @@ class TestStringMethods(unittest.TestCase):
 
         self.assertEqual(comparison_ordering, comparison_int)
 
-    def test_split(self):
+    def test_too_many_arguments(self):
         with self.assertRaises(Exception):
             self.comparison_builder.build_comparison(['a','b','c'], Ordering.OnAPar)
 

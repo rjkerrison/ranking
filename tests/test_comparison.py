@@ -2,9 +2,8 @@ import unittest
 from classes.comparison import *
 
 class TestStringMethods(unittest.TestCase):
-    def __init__(self, param):
+    def setUp(self):
         self.comparison_builder = ComparisonBuilder()
-        super().__init__(param)
 
     def test_pair_arguments(self):
         comparison_list = self.comparison_builder.build_comparison(['a','b'], Ordering.OneBeatsTwo)

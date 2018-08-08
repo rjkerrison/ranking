@@ -17,20 +17,21 @@ class Ranking():
         self.name = name
         self.details = details
         self.entries = entries
-        self.rank_data = rank_data if rank_data is not None else self._initialise_rank_data()
+        self.rank_data = rank_data
+
+        self._initialise_rank_data()
 
     def _initialise_rank_data(self):
         for entry in self.entries:
             if '_id' not in entry:
                 entry['_id'] = self._generate_unique_id(entry)
 
-        self.rank_data = []
+        self.rank_data = self.rank_data or []
+        return self.rank_data
 
     def _generate_unique_id(self, entry):
         json_to_encode = json.dumps(entry)
-        print(json_to_encode)
         encoded_json = json_to_encode.encode('ascii')
-        print(encoded_json)
         return hashlib.sha256(encoded_json).hexdigest()
 
     def calculate_rank(self):
@@ -57,10 +58,7 @@ class Ranking():
             reverse=True)
 
         for entry in ranked_entries:
-            print(
-                '{name:30}{score}'.format(
-                    name = entry['name'],
-                    score = entry_scores[entry['_id']]))
+            print(f'{entry['name']:30}{entry_scores[entry['_id']]}')
 
     def __parse_comparison(self, comparison):
         match = re.match(r'^([0-9a-f]+)([<=>])([0-9a-f]+)$', comparison)
@@ -92,7 +90,7 @@ class Ranking():
             return matched_entries[0]
 
         for i in range(0, number_matches):
-            print('{0}: {1}'.format(i, matched_entries[i]))
+            print(f'{i}: {matched_entries[i]}')
 
         chosen_index = None
 
@@ -121,9 +119,7 @@ class Ranking():
         entry_dictionary = {}
 
         for entry in self.entries:
-            print('{id}: {name}'.format(
-                id = entry['_id'],
-                name = entry['name']))
+            print(f'{entry['_id']}: {entry['name']}')
 
         value = input('Give a comparison like "a234<b567" or "c123=d314": ')
 
@@ -145,9 +141,7 @@ class Ranking():
         matched_entries = [entry['_id'] for entry in self.entries if partial_id in entry['_id']]
         if len(matched_entries) == 1:
             return matched_entries[0]
-        raise Exception('{partial_id} matched {number} entries.'.format(
-            partial_id = partial_id,
-            number = len(matched_entries)))
+        raise Exception(f'{partial_id} matched {len(matched_entries)} entries.')
 
     def __add_entry_dialog(self):
         entry_dictionary = {}

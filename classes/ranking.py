@@ -17,20 +17,21 @@ class Ranking():
         self.name = name
         self.details = details
         self.entries = entries
-        self.rank_data = rank_data if rank_data is not None else self._initialise_rank_data()
+        self.rank_data = rank_data
+
+        self._initialise_rank_data()
 
     def _initialise_rank_data(self):
         for entry in self.entries:
             if '_id' not in entry:
                 entry['_id'] = self._generate_unique_id(entry)
 
-        self.rank_data = []
+        self.rank_data = self.rank_data or []
+        return self.rank_data
 
     def _generate_unique_id(self, entry):
         json_to_encode = json.dumps(entry)
-        print(json_to_encode)
         encoded_json = json_to_encode.encode('ascii')
-        print(encoded_json)
         return hashlib.sha256(encoded_json).hexdigest()
 
     def calculate_rank(self):

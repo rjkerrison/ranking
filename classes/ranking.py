@@ -14,13 +14,15 @@ class Ordering(enum.Enum):
     TwoBeatsOne = 1
 
 class Ranking():
-    def __init__(self, name, details, entries, rank_data):
+    def __init__(self, name, details, entries, rank_data, display_name):
         self.name = name
         self.details = details
         self.entries = entries
         self.rank_data = rank_data
+        self.display_name = display_name
 
         self._initialise_rank_data()
+        self._set_display_names()
 
     def _initialise_rank_data(self):
         for entry in self.entries:
@@ -34,6 +36,10 @@ class Ranking():
         json_to_encode = json.dumps(entry)
         encoded_json = json_to_encode.encode('ascii')
         return hashlib.sha256(encoded_json).hexdigest()
+
+    def _set_display_names(self):
+        for entry in self.entries:
+            entry['display_name'] = self.display_name.format(**entry)
 
     def calculate_rank(self):
         entry_scores = {entry['_id']:0 for entry in self.entries}

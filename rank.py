@@ -21,8 +21,10 @@ def get_ranking(name):
     return all_rankings[name]
 
 def choose_ranking(ranking):
-    a, b = random.choice(ranking.entries), random.choice(ranking.entries)
-    print('A: {name}, {director}'.format(**a))
+    a = random.choice(ranking.entries)
+    b = random.choice(e for e in ranking.entries if e != a)
+
+    print(f'A: {a["display_name"]}')
     print('B: {name}, {director}'.format(**b))
 
     choice_made = None

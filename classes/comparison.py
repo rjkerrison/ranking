@@ -14,10 +14,10 @@ class ComparisonBuilder():
         try:
             pair = [a for a in pair]
         except Exception as e:
-            raise Exception('{0} is not an iterable.', e)
+            raise Exception(f'{pair} is not an iterable.', e)
 
         if len(pair) != 2:
-            raise Exception('{0} is not an iterable of length 2.')
+            raise Exception(f'{pair} is not an iterable of length 2.')
 
         try:
             choice = Ordering(choice)
@@ -26,8 +26,7 @@ class ComparisonBuilder():
                 choice = int(choice)
                 choice = Ordering(choice)
             except:
-                raise Exception('{choice} is an invalid ordering.'.format(
-                    choice = choice))
+                raise Exception(f'{choice} is an invalid ordering.')
 
         return {
           "pair": pair,

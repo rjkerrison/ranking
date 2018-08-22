@@ -1,17 +1,17 @@
 import json
 import random
 import re
-from classes import ranking
+from classes import ranking, file_handler
 
 all_rankings = {}
 
 def load_json(json_file):
-    rankin = ranking.get_ranking_from_json(json_file)
+    rankin = file_handler.get_ranking_from_json(json_file)
     all_rankings[rankin.name] = rankin
     return rankin
 
 def save_json(ranking_name, json_file):
-    ranking.save_ranking_to_json(all_rankings[ranking_name], json_file)
+    file_handler.save_ranking_to_json(all_rankings[ranking_name], json_file)
 
 def get_ranking(name):
     global all_rankings

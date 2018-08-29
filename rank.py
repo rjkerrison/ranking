@@ -34,10 +34,9 @@ def choose_ranking(ranking):
         choice_made = input('Make a choice, "A", "B" or "=": ')
 
         if re.match('^[A=B]$', choice_made):
-            ranking.add_comparison('{a_id}{choice_made}{b_id}'.format(
-                a_id = a['_id'],
-                choice_made = {'A': '>', '=': '=', 'B': '<'}[choice_made],
-                b_id = b['_id']))
+            choice_comparator = {'A': '>', '=': '=', 'B': '<'}[choice_made]
+
+            ranking.add_comparison(f"{a['_id']}{choice_comparator}{b['_id']}")
 
         else:
             choice_made = None

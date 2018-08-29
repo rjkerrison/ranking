@@ -22,10 +22,10 @@ def get_ranking(name):
 
 def choose_ranking(ranking):
     a = random.choice(ranking.entries)
-    b = random.choice(e for e in ranking.entries if e != a)
+    b = random.choice([e for e in ranking.entries if e != a])
 
     print(f'A: {a["display_name"]}')
-    print('B: {name}, {director}'.format(**b))
+    print(f'B: {b["display_name"]}')
 
     choice_made = None
 

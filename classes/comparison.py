@@ -6,6 +6,12 @@ class Ordering(enum.Enum):
     OnAPar = 0
     TwoBeatsOne = 1
 
+class Comparison():
+    def __init__(self, pair, choice):
+        self.pair = pair
+        self.choice = choice
+        self.time = datetime.datetime.now()
+
 class ComparisonBuilder():
     def __init__(self):
         return
@@ -28,8 +34,4 @@ class ComparisonBuilder():
             except:
                 raise Exception(f'{choice} is an invalid ordering.')
 
-        return {
-          "pair": pair,
-          "choice": choice,
-          "time": datetime.datetime.now()
-        }
+        return Comparison(pair, choice)

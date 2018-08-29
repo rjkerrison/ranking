@@ -14,12 +14,12 @@ class Ordering(enum.Enum):
     TwoBeatsOne = 1
 
 class Ranking():
-    def __init__(self, name, details, entries, rank_data, display_name):
+    def __init__(self, name, details, entries, rank_data, display_name = None):
         self.name = name
         self.details = details
         self.entries = entries
         self.rank_data = rank_data
-        self.display_name = display_name
+        self.display_name = display_name or '{name}'
 
         self._initialise_rank_data()
         self._set_display_names()

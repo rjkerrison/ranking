@@ -49,7 +49,7 @@ def main():
         choose_ranking(films)
         choose = 'y' in input('Continue? (y/n) ')
 
-    films.calculate_rank()
+    print(list(films.calculate_rank()))
 
     save_json('films', 'json/films5.json')
 

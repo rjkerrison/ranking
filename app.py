@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 from rank import load_json
 import json
 
@@ -8,10 +8,8 @@ app = Flask(__name__)
 def films():
   films = load_json('json/films4.json')
   films.calculate_rank()
-  json_response = json.dumps([films.__dict__])
-
-  resp = Response(json_response, status=200, mimetype='application/json')
-
+  resp = jsonify([films.__dict__])
+  resp.status_code = 200
   return resp
 
 @app.route('/')

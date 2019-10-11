@@ -196,3 +196,6 @@ class FriendlyComparison():
              'beatenBy': list(self.beatenBy),
              'equals': list(self.equals)
         }
+
+    def score(self):
+        return 2 * len(self.beats) - len(self.beatenBy)

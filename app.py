@@ -26,6 +26,20 @@ def comparisons(id):
   resp.status_code = 200
   return resp
 
+@app.route('/films/scores/', defaults ={'id': None})
+@app.route('/films/scores/<string:id>')
+def scores(id):
+  films = load_json('json/films5.json')
+  c = films.get_comparisons()
+
+  if id is not None:
+    resp = jsonify(c[id].score())
+  else:
+    resp = jsonify({f:c[f].score() for f in c})
+
+  resp.status_code = 200
+  return resp
+
 @app.route('/')
 def hello():
     return 'Hello, World! This is Robin.'

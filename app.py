@@ -25,6 +25,15 @@ def comparisons(id):
   resp.status_code = 200
   return resp
 
+@app.route('/films/comparisons/<string:id1>/beats/<string:id2>', methods = ['POST'])
+def beats(id1, id2):
+  comparison = f'{id1}>{id2}'
+  films.rank_data.append(comparison)
+
+  resp = Response()
+  resp.status_code = 200
+  return resp
+
 @app.route('/films/scores/', defaults ={'id': None})
 @app.route('/films/scores/<string:id>')
 def scores(id):

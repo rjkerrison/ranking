@@ -12,6 +12,14 @@ def films():
   resp.status_code = 200
   return resp
 
+@app.route('/films/comparisons')
+def comparisons():
+  films = load_json('json/films4.json')
+
+  resp = jsonify([films.rank_data])
+  resp.status_code = 200
+  return resp
+
 @app.route('/')
 def hello():
     return 'Hello, World! This is Robin.'

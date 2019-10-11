@@ -3,10 +3,10 @@ from rank import load_json
 import json
 
 app = Flask(__name__)
+films = load_json('json/films5.json')
 
 @app.route('/films')
-def films():
-  films = load_json('json/films5.json')
+def films_index():
   films.calculate_rank()
   resp = jsonify([films.__dict__])
   resp.status_code = 200
@@ -15,7 +15,6 @@ def films():
 @app.route('/films/comparisons/', defaults ={'id': None})
 @app.route('/films/comparisons/<string:id>')
 def comparisons(id):
-  films = load_json('json/films5.json')
   c = films.get_comparisons()
 
   if id is not None:
@@ -29,7 +28,6 @@ def comparisons(id):
 @app.route('/films/scores/', defaults ={'id': None})
 @app.route('/films/scores/<string:id>')
 def scores(id):
-  films = load_json('json/films5.json')
   c = films.get_comparisons()
 
   if id is not None:

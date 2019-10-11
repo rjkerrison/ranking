@@ -66,6 +66,29 @@ class Ranking():
 
         return (self.__format(entry, entry_scores) for entry in ranked_entries)
 
+    def get_comparisons(self):
+        comparisons = {entry['_id']:self.__blank_comparison_for(entry) for entry in self.entries}
+
+        for comparison in self.rank_data:
+            id1, id2, ordering = self.__parse_comparison(comparison)
+
+            if ordering == Ordering.OneBeatsTwo:
+                comparisons[id1].beats.add(id2)
+                comparisons[id2].beatenBy.add(id1)
+
+            if ordering == Ordering.OnAPar:
+                comparisons[id1].equals.add(id2)
+                comparisons[id2].equals.add(id1)
+
+            if ordering == Ordering.TwoBeatsOne:
+                comparisons[id1].beatenBy.add(id2)
+                comparisons[id2].beats.add(id1)
+
+        return comparisons
+
+    def __blank_comparison_for(self, entry):
+        return FriendlyComparison(entry)
+
     def __format(self, entry, entry_scores):
         return f"{entry['name']:30}{entry_scores[entry['_id']]}"
 
@@ -158,3 +181,18 @@ class Ranking():
             entry_dictionary[key] = value
 
         return entry_dictionary
+
+class FriendlyComparison():
+    def __init__(self, entry):
+        self.beats = set([])
+        self.beatenBy = set([])
+        self.equals = set([])
+        self.entry = entry
+
+    def serialize(self):
+        return {
+             '_entry': self.entry,
+             'beats': list(self.beats),
+             'beatenBy': list(self.beatenBy),
+             'equals': list(self.equals)
+        }

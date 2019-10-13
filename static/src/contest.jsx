@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
+import Button from '@material-ui/core/Button'
+
 class Contest extends React.Component {
   constructor(props) {
     super(props)
@@ -23,9 +25,9 @@ class Contest extends React.Component {
 
   render() {
     return (
-      <ul>
-        {this.state.contestants.map(c => <li key={c}>{c}</li>)}
-      </ul>
+      <div>
+        {this.state.contestants.map(c => <Button variant='contained' key={c}>{c}</Button>)}
+      </div>
     )
   }
 }

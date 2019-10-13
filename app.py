@@ -1,9 +1,13 @@
-from flask import Flask, Response, jsonify, request
+from flask import Flask, Response, jsonify, request, render_template
 from rank import load_json
 from classes import songs
 import json
 
-app = Flask(__name__)
+app = Flask(
+  __name__,
+  static_folder='./dist',
+  template_folder='.')
+
 films = load_json('json/films5.json')
 
 @app.route('/films')
@@ -50,7 +54,7 @@ def scores(id):
 
 @app.route('/')
 def hello():
-  return 'Hello, World! This is Robin.'
+  return render_template('./index.html')
 
 @app.route('/songs')
 def get_songs():

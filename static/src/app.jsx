@@ -1,12 +1,15 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Songs from './songs'
+import Scores from './scores'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      songs: []
+      songs: [],
+      scores: []
     }
   }
 
@@ -17,10 +20,26 @@ class App extends React.Component {
         this.setState({ songs: data })
       })
       .catch(console.log)
+
+    fetch('/songs/scores')
+      .then(res => res.json())
+      .then((data) => {
+        this.setState({ scores: data })
+      })
+      .catch(console.log)
   }
 
   render() {
-    return <Songs songs={this.state.songs} />
+    return (
+      <Router>
+        <Route exact path='/'>
+          <Songs songs={this.state.songs} />
+        </Route>
+        <Route path='/scores'>
+          <Scores scores={this.state.scores} />
+        </Route>
+      </Router>
+    )
   }
 }
 

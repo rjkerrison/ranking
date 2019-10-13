@@ -53,7 +53,8 @@ def scores(id):
   return resp
 
 @app.route('/')
-def hello():
+@app.route('/<path:path>')
+def hello(path = None):
   return render_template('./index.html')
 
 @app.route('/songs')

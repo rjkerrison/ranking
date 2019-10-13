@@ -5,8 +5,8 @@ import json
 
 app = Flask(
   __name__,
-  static_folder='./dist',
-  template_folder='.')
+  static_folder='./static/dist',
+  template_folder='./static')
 
 films = load_json('json/films5.json')
 

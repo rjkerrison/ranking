@@ -73,3 +73,22 @@ def post_winner(id):
 
   resp = jsonify([a.as_dict() for a in songs.contests if a._id == id])
   return resp
+
+@app.route('/songs/scores')
+def get_songs_scores():
+  scores = {}
+
+  for song in songs.songs:
+    song_wins = 0
+    song_losses = 0
+
+    song_contests = (c for c in songs.contests if song in c.contestants)
+    for contest in song_contests:
+      if song == contest.outcome:
+        song_wins += 1
+      elif contest.outcome:
+        song_losses += 1
+
+    scores[song] = song_wins - song_losses
+
+  return jsonify(scores)

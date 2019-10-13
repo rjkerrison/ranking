@@ -66,11 +66,6 @@ def get_songs_contests():
 
 @app.route('/songs/contests/<string:id>', methods = ['GET', 'POST'])
 def post_winner(id):
-  print({
-    'form': request.form,
-    'json': request.json
-  })
-
   if request.method == 'POST':
     winner = request.json['winner']
     songs.set_winner(id, winner)

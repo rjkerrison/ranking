@@ -26,3 +26,7 @@ class Contest():
       'contestants': list(self.contestants),
       'outcome': self.outcome
     })
+
+  @staticmethod
+  def from_json(json_contest):
+    return Contest(**json.loads(json_contest))

@@ -10,8 +10,7 @@ class TestContest(unittest.TestCase):
         self.assertEqual(a, b)
 
     def test_from_json(self):
-        j = json.loads(r'{"contestants": [1,4], "outcome": ">"}')
-        a = Contest(**j)
+        a = Contest.from_json(r'{"contestants": [1,4], "outcome": ">"}')
 
         self.assertEqual(frozenset({1,4}), a.contestants)
         self.assertEqual('>', a.outcome)

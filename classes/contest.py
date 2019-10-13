@@ -2,17 +2,21 @@ import json
 
 class Contest():
   def __init__(self, *args, **kwargs):
-    if len(args) >= 2:
-      self.contestants = frozenset(args[:2])
-
-    if len(args) >= 3:
-      self.outcome = args[2]
-
     if 'contestants' in kwargs:
-      self.contestants = frozenset(kwargs['contestants'])
+      contestants = kwargs['contestants']
+    else:
+      contestants = [c for c in args if isinstance(c, Contestant)]
 
     if 'outcome' in kwargs:
-      self.outcome = kwargs['outcome']
+      outcomes = [kwargs['outcome']]
+    else:
+      outcomes = [o for o in args if isinstance(o, Outcome)]
+
+    if len(contestants) == 2:
+      self.contestants = frozenset(contestants)
+
+    if len(outcomes) == 1:
+      self.outcome = outcomes[0]
 
   def __eq__(self, a):
     return (
@@ -30,3 +34,22 @@ class Contest():
   @staticmethod
   def from_json(json_contest):
     return Contest(**json.loads(json_contest))
+
+class Contestant():
+  def __init__(self, id, **kwargs):
+    self.id = id
+    self.details = kwargs
+
+class Outcome():
+  pass
+
+class Win(Outcome):
+  def __init__(self, winner):
+    if not isinstance(winner, Contestant):
+      raise Exception(f'{winner} is not a Contestant')
+
+class Draw(Outcome):
+  pass
+
+class Unknown(Outcome):
+  pass

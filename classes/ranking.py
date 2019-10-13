@@ -8,11 +8,6 @@ class Encoder(json.JSONEncoder):
     def default(self, obj):
         return obj
 
-class Ordering(enum.Enum):
-    OneBeatsTwo = -1
-    OnAPar = 0
-    TwoBeatsOne = 1
-
 class Ranking():
     def __init__(self, name, details, entries, rank_data, display_name = None):
         self.name = name

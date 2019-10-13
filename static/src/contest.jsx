@@ -26,8 +26,36 @@ class Contest extends React.Component {
   render() {
     return (
       <div>
-        {this.state.contestants.map(c => <Button variant='contained' key={c}>{c}</Button>)}
+        {this.state.contestants.map(c => <Contestant key={`contestant_${c}`} id={this.props.params.id} name={c}/>)}
       </div>
+    )
+  }
+}
+
+class Contestant extends React.Component {
+  click() {
+    let url = `/songs/contests/${this.props.id}`
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        winner: this.props.name
+      })
+    })
+  }
+
+  render() {
+    return (
+      <Button
+        key={`button_${this.props.name}`}
+        onClick={this.click.bind(this)}
+        variant='contained'>
+        {this.props.name}
+      </Button>
     )
   }
 }

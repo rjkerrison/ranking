@@ -3,13 +3,13 @@ import json
 class Contest():
   def __init__(self, *args, **kwargs):
     if len(args) >= 2:
-      self.contestors = frozenset(args[:2])
+      self.contestants = frozenset(args[:2])
 
     if len(args) >= 3:
       self.outcome = args[2]
 
-    if 'contestors' in kwargs:
-      self.contestors = frozenset(kwargs['contestors'])
+    if 'contestants' in kwargs:
+      self.contestants = frozenset(kwargs['contestants'])
 
     if 'outcome' in kwargs:
       self.outcome = kwargs['outcome']
@@ -17,12 +17,12 @@ class Contest():
   def __eq__(self, a):
     return (
       isinstance(a, Contest)
-      and a.contestors == self.contestors
+      and a.contestants == self.contestants
       and a.outcome == self.outcome
     )
 
   def as_json(self):
     return json.dumps({
-      'contestors': list(self.contestors),
+      'contestants': list(self.contestants),
       'outcome': self.outcome
     })

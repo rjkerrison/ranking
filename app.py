@@ -1,5 +1,6 @@
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 from rank import load_json
+from classes import songs
 import json
 
 app = Flask(__name__)
@@ -49,8 +50,26 @@ def scores(id):
 
 @app.route('/')
 def hello():
-    return 'Hello, World! This is Robin.'
+  return 'Hello, World! This is Robin.'
 
-@app.route('/robin')
-def robin():
-  return 'robin'
+@app.route('/songs')
+def get_songs():
+  return jsonify(songs.songs)
+
+@app.route('/songs/contests')
+def get_songs_contests():
+  return jsonify([c.as_dict() for c in songs.contests])
+
+@app.route('/songs/contests/<string:id>', methods = ['GET', 'POST'])
+def post_winner(id):
+  print({
+    'form': request.form,
+    'json': request.json
+  })
+
+  if request.method == 'POST':
+    winner = request.json['winner']
+    songs.set_winner(id, winner)
+
+  resp = jsonify([a.as_dict() for a in songs.contests if a._id == id])
+  return resp

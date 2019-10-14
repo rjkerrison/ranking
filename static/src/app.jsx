@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import Songs from './songs'
 import Scores from './scores'
-import Contest from './contest'
+import ContestPicker from './contestPicker'
 
 class App extends React.Component {
   constructor(props) {
@@ -39,7 +39,9 @@ class App extends React.Component {
         <Route path='/scores'>
           <Scores scores={this.state.scores} />
         </Route>
-        <Route path='/contest/:id' render={({match}) => <Contest {...match} />} />
+        <Route path='/contest'>
+          <ContestPicker />
+        </Route>
       </Router>
     )
   }

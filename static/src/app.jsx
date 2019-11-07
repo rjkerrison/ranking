@@ -32,17 +32,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
-        <Route exact path='/'>
-          <Songs songs={this.state.songs} />
-        </Route>
-        <Route path='/scores'>
-          <Scores scores={this.state.scores} />
-        </Route>
-        <Route path='/contest'>
-          <ContestPicker />
-        </Route>
-      </Router>
+      <div>
+        <Scores scores={this.state.scores} />
+        <Router>
+          <Route path='/contest'>
+            <ContestPicker />
+          </Route>
+        </Router>
+      </div>
     )
   }
 }
